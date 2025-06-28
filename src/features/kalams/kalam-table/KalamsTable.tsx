@@ -765,16 +765,23 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{t('kalamPage.sr')}</TableCell>
-              <TableCell>{t('kalamPage.id')}</TableCell>
+              <TableCell>{t('kalamPage.kalamId')}</TableCell>
               <TableCell>{t('kalamPage.customer')}</TableCell>
-              <TableCell>{t('kalamPage.kalam')}</TableCell>
+              <TableCell>{t('kalamPage.item')}</TableCell>
               <TableCell>{t('kalamPage.startDate')}</TableCell>
-              <TableCell>{t('kalamPage.loanAmt')}</TableCell>
-              <TableCell>{t('kalamPage.amtDue')}</TableCell>
+              <TableCell>{t('kalamPage.duration')}</TableCell>
+              <TableCell>{t('kalamPage.customerLoanAmt')}</TableCell>
+              <TableCell>{t('kalamPage.dukandarLoanAmt')}</TableCell>
+              <TableCell>{t('kalamPage.totalLoan')}</TableCell>
+              <TableCell>{t('kalamPage.customerDue')}</TableCell>
+              <TableCell>{t('kalamPage.dukandarDue')}</TableCell>
+              <TableCell>{t('kalamPage.vyapariDue')}</TableCell>
+              <TableCell>{t('kalamPage.dukandarProfit')}</TableCell>
               <TableCell>{t('kalamPage.customerROI')}</TableCell>
-              <TableCell>{t('kalamPage.merchant')}</TableCell>
+              <TableCell>{t('kalamPage.vyapariROI')}</TableCell>
+              <TableCell>{t('kalamPage.vyapariName')}</TableCell>
               <TableCell>{t('kalamPage.todayValue')}</TableCell>
+              <TableCell>{t('kalamPage.balanceValue')}</TableCell>
               <TableCell>{t('kalamPage.validity')}</TableCell>
               <TableCell>{t('kalamPage.viewProfile')}</TableCell>
             </TableRow>
@@ -786,10 +793,29 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
               );
               const { totalMonths, days } =
                 calculateMonthsAndDays(loanStartDate);
+              const customerDue = calculateAnnualCompoundInterest(
+                kalam.kalam.loanDetails.customerAmt,
+                kalam.kalam.loanDetails.customerROI,
+                totalMonths,
+                days
+              );
+              const dukandarDue = calculateAnnualCompoundInterest(
+                kalam.kalam.loanDetails.dukandarAmt,
+                kalam.kalam.loanDetails.merchantROI,
+                totalMonths,
+                days
+              );
+              const vyapariDue = calculateAnnualCompoundInterest(
+                kalam.kalam.loanDetails.totalAmt,
+                kalam.kalam.loanDetails.merchantROI,
+                totalMonths,
+                days
+              );
+              const dukandarProfitLoss =
+                customerDue + kalam.kalam.loanDetails.dukandarAmt - vyapariDue;
               return (
                 <TableRow key={kalam._id}>
                   {/* Kalam ID  */}
-                  <TableCell>{index + 1}</TableCell>
                   <TableCell>{kalam.kalam.loanId}</TableCell>
 
                   {/* Customer Name + Info Icon */}
@@ -826,19 +852,20 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
                   </TableCell>
 
                   <TableCell>{kalam.kalam.loanDetails.loanStartDate}</TableCell>
+                  <TableCell>{0}</TableCell>
                   <TableCell>₹{kalam.kalam.loanDetails.customerAmt}</TableCell>
-                  <TableCell>
-                    ₹
-                    {calculateAnnualCompoundInterest(
-                      kalam.kalam.loanDetails.customerAmt,
-                      kalam.kalam.loanDetails.customerROI * 12,
-                      totalMonths,
-                      days
-                    )}
-                  </TableCell>
+                  <TableCell>₹{kalam.kalam.loanDetails.dukandarAmt}</TableCell>
+                  <TableCell>₹{kalam.kalam.loanDetails.totalAmt}</TableCell>
+
+                  <TableCell>₹{customerDue}</TableCell>
+                  <TableCell>₹{dukandarDue}</TableCell>
+                  <TableCell>₹{vyapariDue}</TableCell>
+                  <TableCell>{dukandarProfitLoss}</TableCell>
                   <TableCell>{kalam.kalam.loanDetails.customerROI}%</TableCell>
+                  <TableCell>{kalam.kalam.loanDetails.merchantROI}%</TableCell>
                   <TableCell>{kalam.merchantDetails?.name || '-'}</TableCell>
                   <TableCell>{calculateTodaysValue()}</TableCell>
+                  <TableCell>-</TableCell>
                   <TableCell>-</TableCell>
 
                   {/* more info button  */}
