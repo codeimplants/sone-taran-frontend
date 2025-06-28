@@ -1,0 +1,21 @@
+// Variables
+$mobile-breakpoint: 768px;
+$primary-color: #3498db;
+
+// Mobile styles
+.mobileView {
+  display: block;
+
+  @media (min-width: $mobile-breakpoint) {
+    display: none;
+  }
+}
+
+// Desktop styles
+.desktopView {
+  display: none;
+
+  @media (min-width: $mobile-breakpoint) {
+    display: block;
+  }
+}
