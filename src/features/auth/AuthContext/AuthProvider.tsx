@@ -38,10 +38,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        const res = await fetch('https://sone-taran-backend.onrender.com/api/user/me', {
-          method: 'GET',
-          credentials: 'include',
-        });
+        const res = await fetch(
+          'https://sone-taran-backend.onrender.com/api/user/me',
+          {
+            method: 'GET',
+            credentials: 'include',
+          }
+        );
 
         if (!res.ok) throw new Error('Session not valid');
 
@@ -127,6 +130,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setEmailToken(null);
     setUser(null);
     localStorage.removeItem('emailToken');
+    localStorage.removeItem('otpToken');
+    localStorage.removeItem('user');
   };
 
   return (
