@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+// Mui
 import {
   Typography,
   Box,
@@ -8,17 +11,27 @@ import {
   Dialog,
   DialogContent,
 } from '@mui/material';
+
+// Icons
 import EmailIcon from '@mui/icons-material/Email';
+
+// Formik
 import { useFormik } from 'formik';
-import { useState } from 'react';
 import * as Yup from 'yup';
+
+// Hooks
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+
+// Loader
 import { TailSpin } from 'react-loader-spinner';
+
+// Language
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../../../Language/LanguageSelector';
 
 const LogIn: React.FC = () => {
+  // Auth hooks
   const { requestOtp, requestEmailOtp } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +39,7 @@ const LogIn: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { t } = useTranslation();
 
+  // Phone Formik
   const formikPhone = useFormik({
     initialValues: {
       phone: '',
@@ -50,6 +64,7 @@ const LogIn: React.FC = () => {
     },
   });
 
+  // Email Formik
   const formikEmail = useFormik({
     initialValues: {
       email: '',
