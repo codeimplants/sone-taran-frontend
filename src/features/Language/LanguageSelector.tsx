@@ -12,7 +12,7 @@ interface colorChange {
   colorChange: boolean;
 }
 
-const CustomerDetails: React.FC<colorChange> = (props) => {
+const LanguageSelector: React.FC<colorChange> = (props) => {
   const { i18n } = useTranslation();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,4 +49,4 @@ const CustomerDetails: React.FC<colorChange> = (props) => {
   );
 };
 
-export default CustomerDetails;
+export default LanguageSelector;

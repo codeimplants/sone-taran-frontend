@@ -24,6 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [otpSent, setOtpSent] = useState<number | undefined | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [loadingAPI, setLoading] = useState<boolean>(true);
 
   const isTokenValid = (token: string): boolean => {
     try {
@@ -63,6 +64,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         } else {
           logout();
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -147,6 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         otpSent,
         isAuthenticated,
         user,
+        loadingAPI,
       }}
     >
       {children}

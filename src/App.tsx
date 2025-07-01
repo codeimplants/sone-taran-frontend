@@ -24,16 +24,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { useAuth } from './features/auth/hooks/useAuth';
 
-// Import icons
-import { Dashboard, Settings } from '@mui/icons-material';
-
 // Import components
+import Dashboard from './features/dashboard/Dashboard';
 import LogIn from './features/auth/components/login/Login';
 import OtpVerify from './features/auth/components/otp-verify/otp-verify';
 import PrivateRoute from './features/auth/components/private-route/private-route';
 import Page404 from './features/404Page/Page404';
 import LanguageSelector from './features/Language/LanguageSelector';
-
+import Settings from './features/settings/Settings';
 // import translation
 import { useTranslation } from 'react-i18next';
 

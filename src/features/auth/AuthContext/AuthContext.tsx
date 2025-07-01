@@ -11,6 +11,7 @@ export interface AuthContextType {
   otpSent: number | null | undefined;
   isAuthenticated: boolean;
   user: any | null;
+  loadingAPI: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

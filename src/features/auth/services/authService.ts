@@ -24,7 +24,7 @@ export interface VerifiedUserResponse {
 
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://sone-taran-backend.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
