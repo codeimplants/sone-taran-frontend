@@ -14,7 +14,7 @@ import useKalamsData from '../../hooks/useKalamsData';
 import { TailSpin } from 'react-loader-spinner';
 
 interface SettingsProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Settings: React.FC<SettingsProps> = ({ onClose }) => {
@@ -39,7 +39,7 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
       } else {
         console.log('Gold rate saved:', goldRate);
       }
-      onClose();
+      onClose?.();
     } catch (error) {
       console.error('Failed to save gold rate');
       seterr('Failed to save gold rate.');
@@ -60,7 +60,7 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
 
       console.log('Gold rate updated:', goldRate);
       seterr(null);
-      onClose();
+      onClose?.();
     } catch (error) {
       console.error('Failed to update gold rate');
       seterr('Failed to update gold rate.');

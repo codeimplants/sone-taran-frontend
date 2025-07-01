@@ -1,4 +1,4 @@
-import { useState, Suspense, lazy, useEffect } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import {
   Drawer,

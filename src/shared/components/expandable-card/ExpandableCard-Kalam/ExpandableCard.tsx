@@ -271,7 +271,6 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({ kalam }) => {
               netWeight: Number(values.netWeight),
               grossWeight: Number(values.grossWeight),
               purity: Number(values.purity),
-              goldRateAtLoan: Number(values.goldRate),
             },
 
             loanDetails: {
