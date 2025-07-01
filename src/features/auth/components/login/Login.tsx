@@ -32,7 +32,7 @@ import LanguageSelector from '../../../Language/LanguageSelector';
 
 const LogIn: React.FC = () => {
   // Auth hooks
-  const { requestOtp, requestEmailOtp } = useAuth();
+  const { requestOtp, requestEmailOtp, loadingAPI } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [emailLogin, setEmail] = useState<boolean | null>(false);
@@ -92,6 +92,9 @@ const LogIn: React.FC = () => {
     },
   });
 
+  if (loadingAPI) {
+    return <Box>loading</Box>;
+  }
   return (
     <>
       <CssBaseline />

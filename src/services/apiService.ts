@@ -9,8 +9,7 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
-
-// ✅ Add request interceptor to attach token
+// Added request interceptor to attach token
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -22,7 +21,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ✅ (Optional) Handle unauthorized responses globally
+// Handle unauthorized responses globally
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -34,6 +33,9 @@ apiClient.interceptors.response.use(
   }
 );
 
+// Interface
+
+// kalam interface
 export interface AddKalam {
   customerId: string,
   loans: {
@@ -44,7 +46,6 @@ export interface AddKalam {
       netWeight: number,
       grossWeight: number,
       purity: number,
-      goldRateAtLoan: number,
     }
     loanDetails: {
       totalAmt: number,
@@ -60,6 +61,7 @@ export interface AddKalam {
   merchantId: string,
 }
 
+// Customer Interface
 export interface Customer {
   name: string;
   contact: string[];
@@ -70,6 +72,7 @@ export interface Customer {
   };
 }
 
+// Edit Customer Interface
 export interface EditCustomer {
   name: string;
   contact: string[];
@@ -80,6 +83,7 @@ export interface EditCustomer {
   };
 }
 
+// Edit Loan interface
 export interface EditLoan {
   loans: {
     details: {
@@ -104,6 +108,7 @@ export interface EditLoan {
   }
 }
 
+// Add Merchnat Interface
 export interface AddMerchant {
   name: string;
   shopName: string;
@@ -115,6 +120,7 @@ export interface AddMerchant {
   };
 }
 
+// Edit Merchant interface
 export interface EditMerchant {
   name: string,
   shopName: string,
@@ -125,6 +131,15 @@ export interface EditMerchant {
   },
   contact: string[]
 }
+
+// Gold Rate Interface
+export interface GoldRate {
+  _id?: string;
+  userId?: string;
+  goldRate: number;
+  createdAt?: string;
+}
+
 
 // API methods
 
@@ -264,6 +279,33 @@ const updateMerchant = async (_id: string, editMerchant: EditMerchant) => {
   }
 }
 
+// Gold rate 
+
+const fetchGoldRateData = async () => {
+  try {
+    const response = await apiClient.get(`/rate/getRate`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching gold rate:", error);
+    throw error;
+  }
+};
+
+const AddGoldRateData = async (goldRate: GoldRate): Promise<{ success: boolean; message?: string }> => {
+  const response = await apiClient.post(`/rate/addRate`, goldRate);
+  return response.data;
+};
+
+const updateGoldRate = async (_id: string, editRate: GoldRate) => {
+  try {
+    const response = await apiClient.patch(`rate/updateRate/${_id}`, editRate)
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.status === 404) return null;
+    throw error;
+  }
+}
+
 // Export the API methods
 export default {
   // Kalam API
@@ -280,7 +322,11 @@ export default {
   // Merchant API
   searchMerchant,
   AddMerchantData,
-  updateMerchant
+  updateMerchant,
+  // Gold Rate
+  fetchGoldRateData,
+  AddGoldRateData,
+  updateGoldRate
 };
 
 apiClient.interceptors.response.use(

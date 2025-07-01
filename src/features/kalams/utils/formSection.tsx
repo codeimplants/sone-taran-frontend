@@ -180,7 +180,6 @@ export const useKalamForm = () => {
               netWeight: Number(values.netWeight),
               grossWeight: Number(values.grossWeight),
               purity: Number(values.purity),
-              goldRateAtLoan: Number(values.goldRate),
             },
 
             loanDetails: {
@@ -205,6 +204,7 @@ export const useKalamForm = () => {
   });
 
   const formSections = [
+    // Customer Information
     {
       title: 'Customer Information',
       fields: [
@@ -237,6 +237,7 @@ export const useKalamForm = () => {
         },
       ],
     },
+    //Customer Address Information
     {
       title: 'Address',
       fields: [
@@ -269,6 +270,7 @@ export const useKalamForm = () => {
         },
       ],
     },
+    //   Item Details
     {
       title: 'Item Details',
       fields: [
@@ -333,18 +335,9 @@ export const useKalamForm = () => {
           error: formik.touched.purity && Boolean(formik.errors.purity),
           helperText: formik.touched.purity && formik.errors.purity,
         },
-        {
-          label: 'Gold Rate',
-          type: 'number',
-          name: 'goldRate',
-          value: formik.values.goldRate,
-          onChange: formik.handleChange,
-          onBlur: formik.handleBlur,
-          error: formik.touched.goldRate && Boolean(formik.errors.goldRate),
-          helperText: formik.touched.goldRate && formik.errors.goldRate,
-        },
       ],
     },
+    // Mortgage Information
     {
       title: 'Mortgage Information',
       fields: [
@@ -427,6 +420,7 @@ export const useKalamForm = () => {
         },
       ],
     },
+    // Merchant Information
     {
       title: 'Merchant Information',
       fields: [
@@ -464,6 +458,7 @@ export const useKalamForm = () => {
         },
       ],
     },
+    // Merchant Address Information
     {
       title: 'Address',
       fields: [
