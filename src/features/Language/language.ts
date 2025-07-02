@@ -278,6 +278,18 @@ i18n
               reset: 'Reset',
             },
           },
+
+          // Settings 
+          Settings: {
+            goldRate: "Gold Rate",
+            goldRatePage: {
+              currentRate: "Current Gold Rate",
+              newGoldRate: "Enter New Gold Rate (₹)",
+              gram: "gram",
+              save: "Save",
+              update: "Update"
+            }
+          }
         },
       },
 
@@ -356,6 +368,7 @@ i18n
             totalLoan: 'एकूण कर्ज',
             customerDue: 'ग्राहक देय',
             dukandarDue: 'दुकानदार देय',
+            vyapariDue: 'व्यापारी देय',
             dukandarProfit: 'दुकानदार नफा',
             customerROI: 'ग्राहक व्याज दर',
             vyapariROI: 'व्यापारी व्याज दर',
@@ -549,6 +562,19 @@ i18n
               reset: 'रीसेट',
             },
           },
+
+          // Settings
+          Settings: {
+            // Gold Rate Page
+            goldRate: "सोन्याचा भाव",
+            goldRatePage: {
+              currentRate: "सध्याचा सोन्याचा दर",
+              newGoldRate: "नवीन सोन्याचा दर (₹) प्रविष्ट करा",
+              gram: "ग्रॅम",
+              save: "जतन करा",
+              update: "बदला"
+            }
+          }
         },
       },
     },

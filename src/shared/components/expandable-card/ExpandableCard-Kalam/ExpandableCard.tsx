@@ -281,7 +281,7 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({ kalam }) => {
               merchantROI: Number(values.merchantROI),
               customerROI: Number(values.customerROI),
               loanStartDate: values.loanStartDate,
-              validity: 'valid',
+              status: 'Active',
             },
           },
           merchantId: merchantId,
@@ -899,7 +899,7 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({ kalam }) => {
                 >
                   {t('kalamCard.merchant')} :{'   '}
                 </Typography>
-                {kalam.merchantDetails?.name || "-"}
+                {kalam.merchantDetails?.name || '-'}
               </Typography>
               <Typography
                 sx={{ fontSize: '12px' }}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
-import Settings from '../Settings';
 import { useAuth } from '../../auth/hooks/useAuth'; // update as per your file structure
+import GoldRate from '../Components/GoldRate';
 
 const SettingsDialog: React.FC = () => {
   const { user } = useAuth();
@@ -27,9 +27,28 @@ const SettingsDialog: React.FC = () => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogContent sx={{ boxShadow: 'none' }}>
-        <Settings onClose={handleClose} />
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      BackdropProps={{
+        sx: {
+          backdropFilter: 'blur(5px)', // <- blur effect
+          backgroundColor: 'rgba(0, 0, 0, 0.2)', // optional: slightly dimmed
+        },
+      }}
+      PaperProps={{
+        sx: {
+          borderRadius: 2,
+          boxShadow: 'none',
+          background: 'none',
+        },
+      }}
+    >
+      <DialogContent sx={{ boxShadow: 'none', position: 'relative', p: 0 }}>
+        <GoldRate
+          onClose={handleClose}
+          laterBtn={open === true ? true : false}
+        />
       </DialogContent>
     </Dialog>
   );

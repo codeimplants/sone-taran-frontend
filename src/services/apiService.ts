@@ -55,7 +55,7 @@ export interface AddKalam {
       customerROI: number,
       merchantROI: number,
       loanStartDate: string,
-      validity: string,
+      status: string,
     },
   }
   merchantId: string,
@@ -139,7 +139,6 @@ export interface GoldRate {
   goldRate: number;
   createdAt?: string;
 }
-
 
 // API methods
 

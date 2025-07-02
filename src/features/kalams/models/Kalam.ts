@@ -29,7 +29,7 @@ export interface KalamDetails {
   customerROI: number;
   merchantROI: number;
   loanStartDate: string;
-  validity: string;
+  status: string;
 }
 
 export interface CustomerDetails {

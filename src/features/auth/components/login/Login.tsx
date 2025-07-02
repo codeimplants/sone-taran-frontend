@@ -92,11 +92,49 @@ const LogIn: React.FC = () => {
     },
   });
 
-  if (loadingAPI) {
-    return <Box>loading</Box>;
-  }
   return (
     <>
+      <Dialog
+        open={loadingAPI}
+        PaperProps={{
+          sx: {
+            background: 'transparent',
+            boxShadow: 'none',
+          },
+        }}
+        BackdropProps={{
+          sx: {
+            backgroundColor: 'rgba(0, 0, 0, 0.3)', // optional blur effect
+            backdropFilter: 'blur(2px)',
+          },
+        }}
+      >
+        <DialogContent
+          sx={{
+            background: 'transparent !important',
+            boxShadow: 'none',
+            padding: 0,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100px',
+            }}
+          >
+            <TailSpin
+              visible={true}
+              height="80"
+              width="80"
+              color="#1976d2"
+              ariaLabel="tail-spin-loading"
+              radius="1"
+            />
+          </Box>
+        </DialogContent>
+      </Dialog>
       <CssBaseline />
       <Box>
         {emailLogin === false ? (

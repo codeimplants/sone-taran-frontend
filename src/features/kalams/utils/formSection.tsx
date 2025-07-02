@@ -20,25 +20,30 @@ export const useKalamForm = () => {
 
   const formik = useFormik({
     initialValues: {
+      // Customer Details
       name: '',
-      itemQuantity: '',
       phone: '',
       altPhone: '',
       street: '',
       city: '',
       zip: '',
+      // Item Details
       itemName: '',
+      itemQuantity: '',
       itemMaterial: '',
       netWeight: '',
       grossWeight: '',
       purity: '',
-      goldRate: '',
+
+      // Mortgage Details
       totalAmount: '',
       customerAmount: '',
       dueAmount: '',
       merchantROI: '',
       customerROI: '',
       loanStartDate: '',
+
+      // Merchant Details
       merchantName: '',
       shopName: '',
       merchantPhone: '',
@@ -47,9 +52,10 @@ export const useKalamForm = () => {
       merchantZip: '',
       dukandarAmount: '',
     },
+
     validationSchema: Yup.object({
+      // Customer Details
       name: Yup.string().required('Name is required'),
-      itemQuantity: Yup.number().required('Quantity is required'),
       phone: Yup.string()
         .required('Phone number is required')
         .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits'),
@@ -62,33 +68,33 @@ export const useKalamForm = () => {
       zip: Yup.string()
         .required('Pin code is required')
         .matches(/^\d{6}$/, 'Invalid Pin code'),
+
+      // Item Details
       itemName: Yup.string().required('Item Name is required'),
+      itemQuantity: Yup.number().required('Quantity is required'),
       itemMaterial: Yup.string().required('Item Type is required'),
       netWeight: Yup.number().required('Net Weight is required').positive(),
       grossWeight: Yup.number().required('Gross Weight is required').positive(),
       purity: Yup.number().required('Purity is required').positive(),
-      goldRate: Yup.number().required('Gold Rate is required').positive(),
-      totalAmount: Yup.number().required('Total Amount is required').positive(),
+
+      // Mortgage Details
       customerAmount: Yup.number()
         .required('Customer Amount is required')
         .positive(),
       dueAmount: Yup.number().positive(),
+      dukandarAmount: Yup.string().required('Dukandar Amount is required'),
       merchantROI: Yup.number().required('Merchant ROI is required').positive(),
       customerROI: Yup.number().required('Customer ROI is required').positive(),
       loanStartDate: Yup.date()
         .required('Loan Start Date is required')
         .nullable(),
-      merchantName: Yup.string().required('Merchant Name is required'),
-      shopName: Yup.string().required('Shop Name is required'),
-      merchantPhone: Yup.string()
-        .required('Merchant Phone is required')
-        .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits'),
-      merchantStreet: Yup.string().required('Merchant Address is required'),
-      merchantCity: Yup.string().required('Merchant Address is required'),
-      merchantZip: Yup.string()
-        .required('Merchant Address is required')
-        .matches(/^\d{6}$/, 'Invalid Pin code'),
-      dukandarAmount: Yup.string().required('Dukandar Amount is required'),
+
+      // Merchant Details
+      merchantPhone: Yup.string().matches(
+        /^\d{10}$/,
+        'Phone number must be exactly 10 digits'
+      ),
+      merchantZip: Yup.string().matches(/^\d{6}$/, 'Invalid Pin code'),
     }),
     onSubmit: async (values) => {
       console.log('Submitting:', values);
@@ -130,71 +136,78 @@ export const useKalamForm = () => {
         }
 
         // for searching and adding new merchant data
-        const {
-          merchantName,
-          shopName,
-          merchantStreet,
-          merchantCity,
-          merchantZip,
-        } = values;
-        const contactMerchant = [values.merchantPhone];
-
         let merchantId = '';
-        let serachMerchantResult;
 
-        try {
-          serachMerchantResult = await searchMerchant(
+        // Only run merchant logic if merchant name is filled
+        if (values.merchantName.trim() !== '') {
+          const {
             merchantName,
-            contactMerchant
-          );
+            shopName,
+            merchantStreet,
+            merchantCity,
+            merchantZip,
+          } = values;
 
-          if (serachMerchantResult.merchant) {
-            merchantId = serachMerchantResult.merchant.merchantId;
-          } else {
-            throw new Error('Merchant not found');
+          const contactMerchant = [values.merchantPhone];
+
+          try {
+            const searchMerchantResult = await searchMerchant(
+              merchantName,
+              contactMerchant
+            );
+
+            if (searchMerchantResult.merchant) {
+              merchantId = searchMerchantResult.merchant.merchantId;
+            } else {
+              throw new Error('Merchant not found');
+            }
+          } catch (error) {
+            const newMerchant = await AddMerchantData({
+              name: merchantName,
+              shopName,
+              contact: contactMerchant,
+              address: {
+                street: merchantStreet,
+                city: merchantCity,
+                zip: Number(merchantZip),
+              },
+            });
+
+            merchantId = newMerchant.merchantId;
           }
-        } catch (error) {
-          const newMerchant = await AddMerchantData({
-            name: merchantName,
-            shopName: shopName,
-            contact: contactMerchant,
-            address: {
-              street: merchantStreet,
-              city: merchantCity,
-              zip: Number(merchantZip),
-            },
-          });
-
-          console.log(newMerchant);
-
-          merchantId = await newMerchant.merchantId;
         }
-        // for adding the kalam data
-        addData({
-          customerId: customerId,
-          loans: {
-            details: {
-              name: values.itemName,
-              number: Number(values.itemQuantity),
-              materialType: values.itemMaterial,
-              netWeight: Number(values.netWeight),
-              grossWeight: Number(values.grossWeight),
-              purity: Number(values.purity),
-            },
 
-            loanDetails: {
-              totalAmt: Number(values.totalAmount),
-              customerAmt: Number(values.customerAmount),
-              dukandarAmt: Number(values.dukandarAmount),
-              dueAmount: Number(values.dueAmount),
-              merchantROI: Number(values.merchantROI),
-              customerROI: Number(values.customerROI),
-              loanStartDate: values.loanStartDate,
-              validity: 'valid',
+        // for adding the kalam data
+        try {
+          addData({
+            customerId: customerId,
+            loans: {
+              details: {
+                name: values.itemName,
+                number: Number(values.itemQuantity),
+                materialType: values.itemMaterial,
+                netWeight: Number(values.netWeight),
+                grossWeight: Number(values.grossWeight),
+                purity: Number(values.purity),
+              },
+
+              loanDetails: {
+                totalAmt: Number(values.totalAmount),
+                customerAmt: Number(values.customerAmount),
+                dukandarAmt: Number(values.dukandarAmount),
+                dueAmount: Number(values.dueAmount),
+                merchantROI: Number(values.merchantROI),
+                customerROI: Number(values.customerROI),
+                loanStartDate: values.loanStartDate,
+                status: 'Active',
+              },
             },
-          },
-          merchantId: merchantId,
-        });
+            merchantId: merchantId,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
         formik.resetForm();
       } catch (err) {
         console.error('Add customer error:', err);
