@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogContent } from '@mui/material';
-import Settings from '../Settings';
+import { Dialog, DialogContent } from '@mui/material';
 import { useAuth } from '../../auth/hooks/useAuth'; // update as per your file structure
+import GoldRate from '../Components/GoldRate';
 
 const SettingsDialog: React.FC = () => {
   const { user } = useAuth();
@@ -45,7 +45,7 @@ const SettingsDialog: React.FC = () => {
       }}
     >
       <DialogContent sx={{ boxShadow: 'none', position: 'relative', p: 0 }}>
-        <Settings
+        <GoldRate
           onClose={handleClose}
           laterBtn={open === true ? true : false}
         />
