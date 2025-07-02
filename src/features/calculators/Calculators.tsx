@@ -44,7 +44,6 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-
 export default function Calculators() {
   const { t } = useTranslation();
 

@@ -238,8 +238,6 @@ const CustomerTable: React.FC<CustomerProps> = (props) => {
       <Box
         sx={{
           width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-end',
           pr: 2,
         }}
       >
@@ -339,6 +337,7 @@ const CustomerTable: React.FC<CustomerProps> = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
+
       {/* for the add icon in the bottom */}
       <Paper
         sx={{
@@ -352,6 +351,8 @@ const CustomerTable: React.FC<CustomerProps> = (props) => {
           justifyContent: 'flex-end',
           pr: { xl: 4, xs: 0 },
           mb: 2,
+          width: '5%',
+          marginLeft: 'auto',
         }}
         elevation={3}
       >
@@ -379,6 +380,7 @@ const CustomerTable: React.FC<CustomerProps> = (props) => {
           />
         </BottomNavigation>
       </Paper>
+
       {/* for viewing for information about customer address */}
       <Dialog
         open={!!selectedCustomer}
@@ -409,6 +411,7 @@ const CustomerTable: React.FC<CustomerProps> = (props) => {
           )}
         </DialogContent>
       </Dialog>
+
       {/* modal for adding customer */}
       <Dialog
         open={addModal}

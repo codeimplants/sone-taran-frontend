@@ -1,166 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Paper,
-  DialogContent,
-  Dialog,
-} from '@mui/material';
-import useKalamsData from '../../hooks/useKalamsData';
+import React from 'react';
+import { Button, Typography, IconButton } from '@mui/material';
 
-// Loader
-import { TailSpin } from 'react-loader-spinner';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-interface SettingsProps {
-  onClose?: () => void;
-}
-
-const Settings: React.FC<SettingsProps> = ({ onClose }) => {
-  const [goldRate, setGoldRate] = useState<string>('');
-  const { addGoldRate, updateGoldRate, fetchRateIfNeeded, rateData } =
-    useKalamsData();
-
-  useEffect(() => {
-    fetchRateIfNeeded();
-  }, []);
-
-  const [err, seterr] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean | null>(null);
-
-  const handleSave = async () => {
-    try {
-      setLoading(true);
-      const response = await addGoldRate({ goldRate: Number(goldRate) });
-
-      if (response?.success === false) {
-        seterr('You have already set the gold rate.Try updating its');
-      } else {
-        console.log('Gold rate saved:', goldRate);
-      }
-      onClose?.();
-    } catch (error) {
-      console.error('Failed to save gold rate');
-      seterr('Failed to save gold rate.');
-    } finally {
-      setLoading(false);
-    }
-  };
-  const handleUpdate = async () => {
-    try {
-      setLoading(true);
-      if (!rateData[0]?._id) {
-        seterr('No existing rate found to update.');
-        return;
-      }
-      await updateGoldRate(rateData[0]._id, {
-        goldRate: Number(goldRate),
-      });
-
-      console.log('Gold rate updated:', goldRate);
-      seterr(null);
-      onClose?.();
-    } catch (error) {
-      console.error('Failed to update gold rate');
-      seterr('Failed to update gold rate.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <Box>
-        <Dialog
-          open={loading}
-          PaperProps={{
-            sx: {
-              background: 'transparent',
-              boxShadow: 'none',
-            },
-          }}
-        >
-          <DialogContent
-            sx={{
-              background: 'transparent !important',
-              boxShadow: 'none',
-              padding: 0,
-            }}
-          >
-            <Box
-              sx={{
-                background: 'transparent',
-                boxShadow: 'none',
-                display: 'flex',
-                justifyContent: 'center',
-                alignContent: 'center',
-              }}
-            >
-              <TailSpin
-                visible={true}
-                height="80"
-                width="80"
-                color="#1976d2"
-                ariaLabel="tail-spin-loading"
-                radius="1"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            </Box>
-          </DialogContent>
-        </Dialog>
-      </Box>
-    );
-  }
+const Settings: React.FC = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="80vh"
-    >
-      <Paper
-        elevation={3}
-        sx={{ backgroundColor: 'none', padding: 4, width: 300 }}
+    <>
+      <Button
+        sx={{
+          border: '1px solid lightgrey',
+          display: 'inline-block',
+          p: 3,
+          ml: 3,
+          borderRadius: '10px',
+          textAlign: 'center',
+          color: 'black',
+          ':hover': {
+            background: 'none',
+            border: '1px solid lightgrey',
+          },
+          ':focus': {
+            outline: 'none',
+          },
+        }}
+        onClick={() => {
+          navigate('/settings/goldrate');
+        }}
       >
-        <Typography variant="h6" gutterBottom>
-          Settings
-        </Typography>
-
-        <TextField
-          fullWidth
-          label="Set Gold Rate (₹ per gram)"
-          type="number"
-          value={goldRate}
-          onChange={(e) => setGoldRate(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleSave}
-          disabled={rateData.length > 0}
-        >
-          Save
-        </Button>
-        <Button
-          fullWidth
-          variant="contained"
-          color="success"
-          onClick={handleUpdate}
-          disabled={!rateData.length}
-          sx={{ mt: 2 }}
-        >
-          Update
-        </Button>
-        <Typography sx={{ color: 'red', textAlign: 'center', mt: 3 }}>
-          {err}
-        </Typography>
-      </Paper>
-    </Box>
+        <IconButton aria-label="Gold Rate">
+          <TrendingUpIcon sx={{ fontSize: 'larger' }} />
+        </IconButton>
+        <Typography>{t('Settings.goldRate')}</Typography>
+      </Button>
+    </>
   );
 };
 

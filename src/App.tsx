@@ -34,6 +34,7 @@ import LanguageSelector from './features/Language/LanguageSelector';
 import Settings from './features/settings/Settings';
 // import translation
 import { useTranslation } from 'react-i18next';
+import GoldRate from './features/settings/Components/GoldRate';
 
 // Lazy load Kalams
 const Kalams = lazy(() => import('./features/kalams/Kalams'));
@@ -262,6 +263,14 @@ const App = () => {
               element={
                 <PrivateRoute>
                   <Settings />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/settings/goldrate"
+              element={
+                <PrivateRoute>
+                  <GoldRate laterBtn={false} />
                 </PrivateRoute>
               }
             />
