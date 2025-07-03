@@ -1,13 +1,14 @@
 import useCustomersDataContext from "./useCustomerDataContext";
 
 const useCustomerData = () => {
-  const { data, loading, error, fetchData, invalidateCache, addCustomerData, searchCustomer, updateCustomer, deleteCustomer } =
+  const { data, loading, error, fetchCustomerData, invalidateCache, addCustomerData, searchCustomer, updateCustomer, deleteCustomer } =
     useCustomersDataContext();
 
   const fetchIfNeeded = () => {
     if (data.length === 0 && !loading) {
-      fetchData();
+      fetchCustomerData();
     }
+    return data;
   };
 
   return { data, loading, error, fetchIfNeeded, invalidateCache, addCustomerData, searchCustomer, updateCustomer, deleteCustomer };

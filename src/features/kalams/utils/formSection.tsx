@@ -52,7 +52,6 @@ export const useKalamForm = () => {
       merchantZip: '',
       dukandarAmount: '',
     },
-
     validationSchema: Yup.object({
       // Customer Details
       name: Yup.string().required('Name is required'),
@@ -192,7 +191,8 @@ export const useKalamForm = () => {
               },
 
               loanDetails: {
-                totalAmt: Number(values.totalAmount),
+                totalAmt:
+                  Number(values.customerAmount) + Number(values.dukandarAmount),
                 customerAmt: Number(values.customerAmount),
                 dukandarAmt: Number(values.dukandarAmount),
                 dueAmount: Number(values.dueAmount),
@@ -222,10 +222,10 @@ export const useKalamForm = () => {
       title: 'Customer Information',
       fields: [
         {
+          type: 'autocomplete',
           label: 'Customer Name',
           name: 'name',
           value: formik.values.name,
-          onChange: formik.handleChange,
           onBlur: formik.handleBlur,
           error: formik.touched.name && Boolean(formik.errors.name),
           helperText: formik.touched.name && formik.errors.name,

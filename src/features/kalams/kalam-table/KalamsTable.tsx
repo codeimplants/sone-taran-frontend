@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Mui
 import {
@@ -14,6 +14,7 @@ import {
   Box,
   Button,
   Fab,
+  Autocomplete,
 } from '@mui/material';
 
 // for form
@@ -23,18 +24,67 @@ import KalamTableUtil from '../utils/KalamTableUtil';
 
 // Mui Icons
 import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
 // Loader
 import { TailSpin } from 'react-loader-spinner';
 
 // Models
 import { KalamProps } from '../models/KalamProps';
+import useCustomerData from '../../../hooks/useCustomersData';
+import { customer } from '../../customers/models/Customers';
 
 const KalamsTable: React.FC<KalamProps> = (props) => {
   const { data } = props;
   const { formik, formSections, loading } = useKalamForm();
 
   const [addModal, setAddModal] = useState(false);
+  const { fetchIfNeeded, searchCustomer } = useCustomerData();
+
+  const [custData, setCustData] = useState<customer[]>([]);
+
+  const getData = async () => {
+    try {
+      const res = await fetchIfNeeded();
+      setCustData(res);
+    } catch (e) {
+      console.error('Error fetching customer data:', e);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const formikReset = () => {
+    formik.resetForm();
+  };
+
+  const searchCustomerValue = async () => {
+    try {
+      const custName = formik.values.name;
+      const contact = [formik.values.phone, formik.values.altPhone];
+
+      try {
+        const searchResult = await searchCustomer(custName, contact);
+
+        if (searchResult?.customer) {
+          formik.setFieldValue('phone', searchResult?.customer?.contact[0]);
+          formik.setFieldValue('altPhone', searchResult?.customer?.contact[1]);
+          formik.setFieldValue(
+            'street',
+            searchResult?.customer?.address.street
+          );
+          formik.setFieldValue('city', searchResult?.customer?.address.city);
+          formik.setFieldValue('zip', searchResult?.customer?.address.zip);
+        }
+      } catch (error) {
+        console.warn('Customer not found.', error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {/* Show loader as an overlay */}
@@ -98,6 +148,9 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
           mb: 2,
           width: '5%',
           marginLeft: 'auto',
+          ':focus': {
+            outline: 'none',
+          },
         }}
         elevation={3}
       >
@@ -106,6 +159,9 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
             height: '0',
             background: 'none',
             boxShadow: 'none',
+            '&:focus': {
+              outline: 'none',
+            },
           }}
         >
           <BottomNavigationAction
@@ -117,6 +173,7 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
                 aria-label="add"
                 onClick={() => {
                   setAddModal(true);
+                  formikReset();
                 }}
               >
                 <AddIcon />
@@ -136,20 +193,66 @@ const KalamsTable: React.FC<KalamProps> = (props) => {
         <DialogTitle>Add Kalam</DialogTitle>
         <DialogContent>
           <Box component="form" onSubmit={formik.handleSubmit}>
-            {/* Customer Information */}
             <Box sx={{ mt: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <Button
+                  sx={{
+                    color: 'black',
+                    '&:focus': {
+                      outline: 'none',
+                    },
+                  }}
+                  onClick={searchCustomerValue}
+                >
+                  Find customer <SearchIcon />
+                </Button>
+              </Box>
               {formSections.map((section: any, index: number) => (
                 <Box key={index} sx={{ mb: 4 }}>
                   <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
                     {section.title}
                   </Typography>
+
                   <Grid
                     container
                     spacing={{ xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
                   >
                     {section.fields.map((field: any, idx: number) => (
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12} key={idx}>
-                        <TextField fullWidth {...field} />
+                        {field.type === 'autocomplete' ? (
+                          <Autocomplete
+                            freeSolo
+                            fullWidth
+                            options={custData.map((c) => c.customer.name)}
+                            value={field.value || ''}
+                            onChange={(_, newValue) => {
+                              // When user selects from dropdown or hits enter
+                              formik.setFieldValue(field.name, newValue || '');
+                            }}
+                            onInputChange={(_, newInputValue, reason) => {
+                              if (reason === 'input') {
+                                // When user types manually
+                                formik.setFieldValue(field.name, newInputValue);
+                              }
+                            }}
+                            onBlur={field.onBlur}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={field.label}
+                                error={field.error}
+                                helperText={field.helperText}
+                              />
+                            )}
+                          />
+                        ) : (
+                          <TextField fullWidth {...field} />
+                        )}
                       </Grid>
                     ))}
                   </Grid>

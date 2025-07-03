@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Component Imports
 import KalamDialogs from './KalamDialog';
+import { KalamProps } from '../models/KalamProps';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,7 +53,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }
@@ -64,10 +65,7 @@ function a11yProps(index: number) {
   };
 }
 
-interface kalamTabelProps {
-  data: Kalam[];
-}
-const useKalamtable: React.FC<kalamTabelProps> = (props) => {
+const useKalamtable: React.FC<KalamProps> = (props) => {
   const { data } = props;
 
   // For translation
@@ -79,7 +77,7 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
   // For Opening the Model
   const [sortModal, setSortModal] = useState<boolean>(false);
 
-  //  For Seraching kalam base don search Input
+  //  For Seraching kalam based on search Input
   const searchFunction = (value: any) => {
     const lowerSearch = value.toLowerCase();
     const filtered = data.filter(
@@ -91,6 +89,7 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
     setFilteredData(filtered);
     console.log(filtered);
   };
+
   const [selectedCustomer, setSelectedCustomer] =
     useState<CustomerDetails | null>(null);
   const [selectedKalam, setSelectedKalam] = useState<KalamDetails | null>(null);
@@ -258,8 +257,24 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Active" {...a11yProps(0)} />
-            <Tab label="In-active" {...a11yProps(1)} />
+            <Tab
+              label="Active"
+              sx={{
+                ':focus': {
+                  outline: 'none',
+                },
+              }}
+              {...a11yProps(0)}
+            />
+            <Tab
+              label="In-active"
+              sx={{
+                ':focus': {
+                  outline: 'none',
+                },
+              }}
+              {...a11yProps(1)}
+            />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>

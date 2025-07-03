@@ -183,6 +183,8 @@ export const KalamsDataProvider = ({ children }: { children: ReactNode }) => {
     },
     [fetchData]
   );
+
+  
   return (
     <KalamsDataContext.Provider
       value={{

@@ -6,7 +6,7 @@ interface CustomerDataContextProps {
   data: customer[];
   loading: boolean;
   error: Error | null;
-  fetchData: () => void;
+  fetchCustomerData: () => void;
   invalidateCache: () => void;
   addCustomerData: (newCustomer: Customer) => Promise<any>;
   updateCustomer: (_id: string, editCustomer: EditCustomer) => void;
@@ -24,7 +24,7 @@ export const CustomerDataProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<Error | null>(null);
 
   // For customer
-  const fetchData = useCallback(async () => {
+  const fetchCustomerData = useCallback(async () => {
     try {
       setLoading(true);
       const result = await apiService.fetchCustomerData();
@@ -41,28 +41,28 @@ export const CustomerDataProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const invalidateCache = useCallback(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchCustomerData();
+  }, [fetchCustomerData]);
 
-const addCustomerData = useCallback(
-  async (newCustomer: Customer) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const createdCustomer = await apiService.AddCustomerData(newCustomer);
-      await fetchData();
-      return createdCustomer; // ✅ Return this!
-    } catch (err) {
-      setError(
-        err instanceof Error ? err : new Error('Failed to add customer')
-      );
-      return null; // fallback
-    } finally {
-      setLoading(false);
-    }
-  },
-  [fetchData]
-);
+  const addCustomerData = useCallback(
+    async (newCustomer: Customer) => {
+      try {
+        setLoading(true);
+        setError(null);
+        const createdCustomer = await apiService.AddCustomerData(newCustomer);
+        await fetchCustomerData();
+        return createdCustomer; // ✅ Return this!
+      } catch (err) {
+        setError(
+          err instanceof Error ? err : new Error('Failed to add customer')
+        );
+        return null; // fallback
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchCustomerData]
+  );
 
   const updateCustomer = useCallback(
     async (_id: string, editCustomer: EditCustomer) => {
@@ -70,7 +70,7 @@ const addCustomerData = useCallback(
         setLoading(true);
         setError(null);
         await apiService.updateCustomer(_id, editCustomer);
-        await fetchData();
+        await fetchCustomerData();
       } catch (err) {
         if (error instanceof Error) {
           setError(error);
@@ -81,7 +81,7 @@ const addCustomerData = useCallback(
         setLoading(false);
       }
     },
-    [fetchData]
+    [fetchCustomerData]
   );
 
   const deleteCustomer = useCallback(
@@ -90,7 +90,7 @@ const addCustomerData = useCallback(
         setLoading(true);
         setError(null);
         await apiService.deleteCustomer(_id);
-        await fetchData();
+        await fetchCustomerData();
       } catch (err) {
         setError(
           err instanceof Error ? err : new Error('Failed to add customer')
@@ -99,7 +99,7 @@ const addCustomerData = useCallback(
         setLoading(false);
       }
     },
-    [fetchData]
+    [fetchCustomerData]
   );
 
   const searchCustomer = useCallback(
@@ -107,13 +107,14 @@ const addCustomerData = useCallback(
       try {
         setLoading(true);
         setError(null);
-        await apiService.searchCustomer(name, contact);
+        const result = await apiService.searchCustomer(name, contact);
+        return result;
       } catch (error) {
       } finally {
         setLoading(false);
       }
     },
-    [fetchData]
+    [fetchCustomerData]
   );
 
   return (
@@ -122,7 +123,7 @@ const addCustomerData = useCallback(
         data,
         loading,
         error,
-        fetchData,
+        fetchCustomerData,
         invalidateCache,
         addCustomerData,
         updateCustomer,
