@@ -38,7 +38,8 @@ import { useNavigate } from 'react-router-dom';
 // Component Imports
 import KalamDialogs from './KalamDialog';
 import { format } from 'date-fns';
-import { formatLoanDuration } from './kalamTableHelper';
+import { calculateTodaysValue, formatLoanDuration } from './kalamTableHelper';
+import useKalamsData from '../../../hooks/useKalamsData';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -74,6 +75,7 @@ interface kalamTabelProps {
 }
 const useKalamtable: React.FC<kalamTabelProps> = (props) => {
   const { data } = props;
+  const fetchGoldRate = useKalamsData();
 
   // For translation
   const { t } = useTranslation();
@@ -116,8 +118,6 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
   };
 
   const debouncedSearchHandler = debouncingSearch(handleSearch, 1000);
-
-  const calculateTodaysValue = () => '-';
 
   const navigate = useNavigate();
 
@@ -326,6 +326,12 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                     customerDue +
                     kalam.kalam.loanDetails.dukandarAmt -
                     vyapariDue;
+
+                  const valueToday = calculateTodaysValue(
+                    kalam.kalam.details.netWeight,
+                    kalam.kalam.details.purity,
+                    fetchGoldRate?.rateData[0]?.goldRate
+                  );
                   return (
                     <TableRow key={kalam._id}>
                       {/* Kalam ID  */}
@@ -413,8 +419,27 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                       <TableCell>
                         {kalam.merchantDetails?.name || '-'}
                       </TableCell>
-                      <TableCell>{calculateTodaysValue()}</TableCell>
-                      <TableCell>-</TableCell>
+                      <TableCell>{valueToday}</TableCell>
+                      <TableCell
+                        sx={{
+                          backgroundColor:
+                            valueToday - vyapariDue < 0
+                              ? 'rgba(255, 0, 0, 0.1)' // soft red
+                              : valueToday - vyapariDue > 0
+                              ? 'rgba(0, 128, 0, 0.1)' // soft green
+                              : 'transparent',
+                          color:
+                            valueToday - vyapariDue < 0
+                              ? '#d32f2f' // strong red
+                              : valueToday - vyapariDue > 0
+                              ? '#2e7d32' // strong green
+                              : 'inherit',
+                          fontWeight:
+                            valueToday - vyapariDue !== 0 ? 'bold' : 'normal',
+                        }}
+                      >
+                        {valueToday - vyapariDue}
+                      </TableCell>
                       <TableCell>-</TableCell>
 
                       {/* more info button  */}
@@ -562,7 +587,7 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                       <TableCell>
                         {kalam.merchantDetails?.name || '-'}
                       </TableCell>
-                      <TableCell>{calculateTodaysValue()}</TableCell>
+                      <TableCell>{0}</TableCell>
                       <TableCell>-</TableCell>
                       <TableCell>-</TableCell>
 

@@ -24,3 +24,13 @@ export const formatLoanDuration = ({
     </>
   );
 };
+
+export const calculateTodaysValue = (
+  netWeight: number,
+  purity: number,
+  metalRate: number
+): number => {
+  const pureGoldWeight = (netWeight * purity) / 100;
+  const metalValue = pureGoldWeight * metalRate;
+  return metalValue;
+};
