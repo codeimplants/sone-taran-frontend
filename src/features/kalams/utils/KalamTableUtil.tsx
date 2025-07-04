@@ -40,6 +40,7 @@ import KalamDialogs from './KalamDialog';
 import { format } from 'date-fns';
 import { calculateTodaysValue, formatLoanDuration } from './kalamTableHelper';
 import useKalamsData from '../../../hooks/useKalamsData';
+import { calculateMaxLoanTenure2 } from '../../../utils/MaxLoanTenureUtil';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -332,6 +333,13 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                     kalam.kalam.details.purity,
                     fetchGoldRate?.rateData[0]?.goldRate
                   );
+
+                  const maxLoanTenure = calculateMaxLoanTenure2(
+                    valueToday,
+                    valueToday,
+                    kalam.kalam.loanDetails.customerROI
+                  );
+
                   return (
                     <TableRow key={kalam._id}>
                       {/* Kalam ID  */}
@@ -440,7 +448,7 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                       >
                         {valueToday - vyapariDue}
                       </TableCell>
-                      <TableCell>-</TableCell>
+                      <TableCell>{maxLoanTenure}</TableCell>
 
                       {/* more info button  */}
                       <TableCell>
