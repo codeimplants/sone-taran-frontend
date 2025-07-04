@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-
-// Mui
 import {
   Paper,
   Dialog,
@@ -15,19 +13,10 @@ import {
   Button,
   Fab,
 } from '@mui/material';
-
-// for form
 import { useKalamForm } from '../utils/formSection';
-
 import KalamTableUtil from '../utils/KalamTableUtil';
-
-// Mui Icons
 import AddIcon from '@mui/icons-material/Add';
-
-// Loader
 import { TailSpin } from 'react-loader-spinner';
-
-// Models
 import { KalamProps } from '../models/KalamProps';
 
 const KalamsTable: React.FC<KalamProps> = (props) => {

@@ -28,12 +28,17 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // Utils
-import { calculateMonthsAndDays } from '../../../utils/CountDaysUtil';
+import {
+  calculateMonthsAndDays,
+  convertToYearsMonthsDays,
+} from '../../../utils/CountDaysUtil';
 import { calculateAnnualCompoundInterest } from '../../../utils/InterestCalculatorUtil';
 import { useNavigate } from 'react-router-dom';
 
 // Component Imports
 import KalamDialogs from './KalamDialog';
+import { format } from 'date-fns';
+import { formatLoanDuration } from './kalamTableHelper';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -295,6 +300,10 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                   );
                   const { totalMonths, days } =
                     calculateMonthsAndDays(loanStartDate);
+                  const loanDuration = convertToYearsMonthsDays(
+                    totalMonths,
+                    days
+                  );
                   const customerDue = calculateAnnualCompoundInterest(
                     kalam.kalam.loanDetails.customerAmt,
                     kalam.kalam.loanDetails.customerROI,
@@ -358,9 +367,12 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                       </TableCell>
 
                       <TableCell>
-                        {kalam.kalam.loanDetails.loanStartDate}
+                        {format(
+                          new Date(kalam.kalam.loanDetails.loanStartDate),
+                          'dd-MMM-yy'
+                        )}
                       </TableCell>
-                      <TableCell>{0}</TableCell>
+                      <TableCell>{formatLoanDuration(loanDuration)}</TableCell>
                       <TableCell>
                         ₹{kalam.kalam.loanDetails.customerAmt}
                       </TableCell>

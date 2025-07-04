@@ -74,6 +74,13 @@ export const calculateRoundedMonthsAndDays = (
   );
 };
 
+export const convertToYearsMonthsDays = (totalMonths: number, days: number) => {
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  return { years, months, days };
+};
+
 // Test cases
 // const testCalculateRoundedMonthsAndDays = () => {
 //     const testCases = [
