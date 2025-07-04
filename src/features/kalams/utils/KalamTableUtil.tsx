@@ -384,7 +384,26 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                       <TableCell>₹{customerDue}</TableCell>
                       <TableCell>₹{dukandarDue}</TableCell>
                       <TableCell>₹{vyapariDue}</TableCell>
-                      <TableCell>{dukandarProfitLoss}</TableCell>
+                      <TableCell
+                        sx={{
+                          backgroundColor:
+                            dukandarProfitLoss < 0
+                              ? 'rgba(255, 0, 0, 0.1)' // soft red
+                              : dukandarProfitLoss > 0
+                              ? 'rgba(0, 128, 0, 0.1)' // soft green
+                              : 'transparent',
+                          color:
+                            dukandarProfitLoss < 0
+                              ? '#d32f2f' // strong red
+                              : dukandarProfitLoss > 0
+                              ? '#2e7d32' // strong green
+                              : 'inherit',
+                          fontWeight:
+                            dukandarProfitLoss !== 0 ? 'bold' : 'normal',
+                        }}
+                      >
+                        {dukandarProfitLoss}
+                      </TableCell>
                       <TableCell>
                         {kalam.kalam.loanDetails.customerROI}%
                       </TableCell>
