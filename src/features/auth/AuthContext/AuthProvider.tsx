@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
-      await fetch('http://31.97.61.191:4000/api/user/logout', {
+      await fetch('https://api.sonetaran.codeimplants.com/api/user/logout', {
         method: 'POST',
         credentials: 'include',
       });
