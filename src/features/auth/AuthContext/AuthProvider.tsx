@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchSession = async () => {
       try {
         const res = await fetch(
-          'https://sone-taran-backend.onrender.com/api/user/me',
+          'https://api.sonetaran.codeimplants.com/api/user/me',
           {
             method: 'GET',
             credentials: 'include',
@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
-      await fetch('https://sone-taran-backend.onrender.com/api/user/logout', {
+      await fetch('http://31.97.61.191:4000/api/user/logout', {
         method: 'POST',
         credentials: 'include',
       });

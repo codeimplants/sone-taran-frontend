@@ -1,8 +1,9 @@
 import axios from "axios";
 
+
 // Create a reusable axios instance with a base URL
 const apiClient = axios.create({
-  baseURL: "https://sone-taran-backend.onrender.com/api",
+  baseURL: `${import.meta.env.VITE_API_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -145,7 +146,7 @@ export interface GoldRate {
 // Kalam
 const fetchKalamsData = async () => {
   try {
-    const response = await apiClient.get("/loan/getLoans");
+    const response = await apiClient.get("/api/loan/getLoans");
     return response.data;
   } catch (error) {
     console.error("Error fetching Kalams data:", error);
@@ -156,7 +157,7 @@ const fetchKalamsData = async () => {
 const AddKalamsData = async (KalamData: AddKalam) => {
 
   try {
-    const response = await apiClient.post("/loan/addLoan",
+    const response = await apiClient.post("/api/loan/addLoan",
       KalamData
     );
     return response.data;
@@ -169,7 +170,7 @@ const AddKalamsData = async (KalamData: AddKalam) => {
 
 const updateLoan = async (_id: string, editLoan: EditLoan) => {
   try {
-    const response = await apiClient.patch(`/loan/updateLoan/${_id}`, editLoan)
+    const response = await apiClient.patch(`/api/loan/updateLoan/${_id}`, editLoan)
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -179,7 +180,7 @@ const updateLoan = async (_id: string, editLoan: EditLoan) => {
 
 const deleteLoan = async (_id: string) => {
   try {
-    const response = await apiClient.delete(`/loan/deleteLoan/${_id}`)
+    const response = await apiClient.delete(`/api/loan/deleteLoan/${_id}`)
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -191,7 +192,7 @@ const deleteLoan = async (_id: string) => {
 //Customer 
 const fetchCustomerData = async () => {
   try {
-    const response = await apiClient.get("/customer/getCustomers");
+    const response = await apiClient.get("/api/customer/getCustomers");
     return response.data;
   } catch (error) {
     console.error("Error fetching Kalams data:", error);
@@ -203,7 +204,7 @@ const fetchCustomerData = async () => {
 const AddCustomerData = async (CustomerData: Customer) => {
 
   try {
-    const response = await apiClient.post("/customer/addCustomer",
+    const response = await apiClient.post("/api/customer/addCustomer",
       CustomerData
     );
     return response.data;
@@ -215,7 +216,7 @@ const AddCustomerData = async (CustomerData: Customer) => {
 
 const searchCustomer = async (name: string, contact: string[]) => {
   try {
-    const response = await apiClient.post("/customer/search", { name, contact });
+    const response = await apiClient.post("/api/customer/search", { name, contact });
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -225,7 +226,7 @@ const searchCustomer = async (name: string, contact: string[]) => {
 
 const updateCustomer = async (_id: string, updateCustomer: EditCustomer) => {
   try {
-    const response = await apiClient.patch(`/customer/updateCustomer/${_id}`, updateCustomer)
+    const response = await apiClient.patch(`/api/customer/updateCustomer/${_id}`, updateCustomer)
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -235,7 +236,7 @@ const updateCustomer = async (_id: string, updateCustomer: EditCustomer) => {
 
 const deleteCustomer = async (_id: string) => {
   try {
-    const response = await apiClient.delete(`/customer/deleteCustomer/${_id}`)
+    const response = await apiClient.delete(`/api/customer/deleteCustomer/${_id}`)
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -247,7 +248,7 @@ const deleteCustomer = async (_id: string) => {
 const AddMerchantData = async (MerchantData: AddMerchant) => {
 
   try {
-    const response = await apiClient.post("/merchant/addMerchant",
+    const response = await apiClient.post("/api/merchant/addMerchant",
       MerchantData
     );
     console.log(response.data)
@@ -260,7 +261,7 @@ const AddMerchantData = async (MerchantData: AddMerchant) => {
 
 const searchMerchant = async (name: string, contact: string[]) => {
   try {
-    const response = await apiClient.post("/merchant/searchMerchant", { name, contact });
+    const response = await apiClient.post("/api/merchant/searchMerchant", { name, contact });
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -270,7 +271,7 @@ const searchMerchant = async (name: string, contact: string[]) => {
 
 const updateMerchant = async (_id: string, editMerchant: EditMerchant) => {
   try {
-    const response = await apiClient.patch(`/merchant/updateMerchant/${_id}`, editMerchant)
+    const response = await apiClient.patch(`/api/merchant/updateMerchant/${_id}`, editMerchant)
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;
@@ -282,7 +283,7 @@ const updateMerchant = async (_id: string, editMerchant: EditMerchant) => {
 
 const fetchGoldRateData = async () => {
   try {
-    const response = await apiClient.get(`/rate/getRate`);
+    const response = await apiClient.get(`/api/rate/getRate`);
     return response.data;
   } catch (error) {
     console.error("Error fetching gold rate:", error);
@@ -291,13 +292,13 @@ const fetchGoldRateData = async () => {
 };
 
 const AddGoldRateData = async (goldRate: GoldRate): Promise<{ success: boolean; message?: string }> => {
-  const response = await apiClient.post(`/rate/addRate`, goldRate);
+  const response = await apiClient.post(`/api/rate/addRate`, goldRate);
   return response.data;
 };
 
 const updateGoldRate = async (_id: string, editRate: GoldRate) => {
   try {
-    const response = await apiClient.patch(`rate/updateRate/${_id}`, editRate)
+    const response = await apiClient.patch(`/api/rate/updateRate/${_id}`, editRate)
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) return null;

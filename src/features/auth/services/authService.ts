@@ -24,7 +24,7 @@ export interface VerifiedUserResponse {
 
 
 const apiClient = axios.create({
-  baseURL: "https://sone-taran-backend.onrender.com/api",
+  baseURL: `${import.meta.env.VITE_API_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -42,7 +42,7 @@ export const requestPhoneOtpApi = async (phone: string | { phoneNo: string }): P
 
   const phoneNumber = typeof phone === "object" ? phone.phoneNo : phone;
 
-  const response = await apiClient.post("/user/sendPhoneOtp", { phone: phoneNumber });
+  const response = await apiClient.post("/api/user/sendPhoneOtp", { phone: phoneNumber });
   console.log(`OTP requested for phone: ${phoneNumber}`);
 
   console.log(response.data.otp)
@@ -60,7 +60,7 @@ export const verifyPhoneOtpApi = async (
 ): Promise<VerifiedUserResponse | null> => {
   try {
     const response = await apiClient.post(
-      '/user/verifyPhoneOtp',
+      '/api/user/verifyPhoneOtp',
       { phone, otp, fullhash },
     );
 
