@@ -3,6 +3,7 @@ export interface Kalam {
   kalam: KalamDetails;
   customerDetails: CustomerDetails;
   merchantDetails: MerchantDetails;
+  goldRate: GoldRate[];
 }
 
 export interface KalamDetails {
@@ -25,7 +26,7 @@ export interface KalamDetails {
   totalAmt: number;
   customerAmt: number;
   dukandarAmt: number;
-  dueAmount: number,
+  dueAmount: number;
   customerROI: number;
   merchantROI: number;
   loanStartDate: string;
@@ -55,4 +56,12 @@ export interface Address {
   street: string;
   city: string;
   zip: string;
+}
+
+export interface GoldRate {
+  createdAt: string;
+  goldRate: number;
+  updatedAt: number;
+  _id: string;
+  __v: 0;
 }

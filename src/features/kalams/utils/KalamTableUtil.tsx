@@ -76,7 +76,6 @@ interface kalamTabelProps {
 }
 const useKalamtable: React.FC<kalamTabelProps> = (props) => {
   const { data } = props;
-  const fetchGoldRate = useKalamsData();
 
   // For translation
   const { t } = useTranslation();
@@ -331,7 +330,7 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                   const valueToday = calculateTodaysValue(
                     kalam.kalam.details.netWeight,
                     kalam.kalam.details.purity,
-                    fetchGoldRate?.rateData[0]?.goldRate
+                    kalam.goldRate[0].goldRate
                   );
 
                   const maxLoanTenure = calculateMaxLoanTenure2(
