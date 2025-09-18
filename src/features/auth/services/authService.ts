@@ -2,8 +2,10 @@ import axios from "axios";
 
 export interface RequestOtpResponse {
   fullhash: string;
-  otpToken: string;
-  otp?: number
+  msg: string;
+  phone: number;
+  sessionId: string;
+  success: boolean;
 }
 
 interface RequestEmailOtpResponse {
@@ -57,11 +59,12 @@ export const verifyPhoneOtpApi = async (
   phone: string,
   otp: number,
   fullhash: string,
+  sessionId: string|null
 ): Promise<VerifiedUserResponse | null> => {
   try {
     const response = await apiClient.post(
       '/api/user/verifyPhoneOtp',
-      { phone, otp, fullhash },
+      { phone, otp, fullhash, sessionId },
     );
 
     if (response.status === 200 && response.data.success && response.data.user) {

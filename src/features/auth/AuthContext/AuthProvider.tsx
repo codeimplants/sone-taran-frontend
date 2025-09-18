@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [fullhash, setFullhash] = useState<string | null>(null);
   const [emailToken, setEmailToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [otpSent, setOtpSent] = useState<number | undefined | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
   const [loadingAPI, setLoading] = useState<boolean>(true);
 
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     setFullhash(response.fullhash);
     setPhoneNumber(phone);
-    setOtpSent(response.otp);
+    setSessionId(response.sessionId);
   };
 
   const requestEmailOtp = async (email: string) => {
@@ -92,7 +92,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const response = await verifyPhoneOtpApi(
       String(phoneNumber),
       otp,
-      fullhash
+      fullhash,
+      sessionId
     );
 
     if (response?.success) {
@@ -147,7 +148,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         verifyOtp,
         verifyEmailOtp,
         logout,
-        otpSent,
         isAuthenticated,
         user,
         loadingAPI,

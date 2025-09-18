@@ -12,7 +12,6 @@ const OtpVerify: React.FC = () => {
     verifyEmailOtp,
     requestOtp,
     phoneNumber,
-    otpSent,
     requestEmailOtp,
   } = useAuth();
   const [error, setError] = useState<string | null>(null);
@@ -170,16 +169,16 @@ const OtpVerify: React.FC = () => {
               error={
                 otpFielsEmailLogin
                   ? formikEmailOtp.touched.EmailOtp &&
-                    Boolean(formikEmailOtp.errors.EmailOtp)
+                  Boolean(formikEmailOtp.errors.EmailOtp)
                   : formikPhoneOtp.touched.PhoneOtp &&
-                    Boolean(formikPhoneOtp.errors.PhoneOtp)
+                  Boolean(formikPhoneOtp.errors.PhoneOtp)
               }
               helperText={
                 otpFielsEmailLogin
                   ? formikEmailOtp.touched.EmailOtp &&
-                    formikEmailOtp.errors.EmailOtp
+                  formikEmailOtp.errors.EmailOtp
                   : formikPhoneOtp.touched.PhoneOtp &&
-                    formikPhoneOtp.errors.PhoneOtp
+                  formikPhoneOtp.errors.PhoneOtp
               }
             />
             {error && (
@@ -228,26 +227,6 @@ const OtpVerify: React.FC = () => {
                 {t('OtpPage.resendOtp')}
               </Button>
             </Box>
-            {otpFielsEmailLogin ? (
-              ' '
-            ) : (
-              <Box
-                sx={{
-                  mt: 2,
-                  textAlign: 'center',
-                  fontSize: 'larger',
-                  display: {
-                    xl: 'none',
-                    lg: 'none',
-                    md: 'none',
-                    sm: 'none',
-                    xs: 'block',
-                  },
-                }}
-              >
-                OTP :- {otpSent}
-              </Box>
-            )}
           </Box>
         </Box>
       </Box>

@@ -35,6 +35,7 @@ import Settings from './features/settings/Settings';
 // import translation
 import { useTranslation } from 'react-i18next';
 import GoldRate from './features/settings/Components/GoldRate';
+import { Privacy } from './Privacy';
 
 // Lazy load Kalams
 const Kalams = lazy(() => import('./features/kalams/Kalams'));
@@ -149,7 +150,7 @@ const App = () => {
       console.log('Logged Out');
       logout();
       setLogoutModal(false);
-    } catch (e) {}
+    } catch (e) { }
   };
 
   return (
@@ -174,43 +175,45 @@ const App = () => {
       </AppBar>
 
       {/* Sidebar Drawer */}
-      <Drawer
-        variant={isMobile ? 'temporary' : 'permanent'}
-        open={isMobile ? mobileOpen : true}
-        onClose={toggleDrawer}
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+      {location.pathname === '/privacy' || location.pathname==='/404' ? '' :
+        <Drawer
+          variant={isMobile ? 'temporary' : 'permanent'}
+          open={isMobile ? mobileOpen : true}
+          onClose={toggleDrawer}
+          sx={{
             width: drawerWidth,
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'column',
-          },
-        }}
-      >
-        <Box sx={{ flexGrow: 1, marginTop: '4rem' }}>{drawerContent}</Box>
-        <Divider />
-        <Box sx={{ color: 'black' }}>
-          <Button
-            onClick={() => {
-              isMobile && toggleDrawer();
-              setLogoutModal(true);
-            }}
-            sx={{ width: '100%' }}
-          >
-            <Typography
-              sx={{
-                color: 'black',
-                textTransform: 'none',
-                padding: 1,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          }}
+        >
+          <Box sx={{ flexGrow: 1, marginTop: '4rem' }}>{drawerContent}</Box>
+          <Divider />
+          <Box sx={{ color: 'black' }}>
+            <Button
+              onClick={() => {
+                isMobile && toggleDrawer();
+                setLogoutModal(true);
               }}
+              sx={{ width: '100%' }}
             >
-              {t('menuItems.logout')}
-            </Typography>
-          </Button>
-        </Box>
-      </Drawer>
+              <Typography
+                sx={{
+                  color: 'black',
+                  textTransform: 'none',
+                  padding: 1,
+                }}
+              >
+                {t('menuItems.logout')}
+              </Typography>
+            </Button>
+          </Box>
+        </Drawer>
+      }
       {/* Main Content Area */}
       <Box component="main" sx={{ flexGrow: 1, mt: 8 }}>
         <BreadcrumbsComponent />
@@ -282,6 +285,7 @@ const App = () => {
                 </PrivateRoute>
               }
             />
+            <Route path='/privacy' element={<Privacy />} />
             <Route path="*" element={<Page404 />} />{' '}
           </Routes>
         </Suspense>

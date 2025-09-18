@@ -30,7 +30,9 @@ export const calculateTodaysValue = (
   purity: number,
   metalRate: number
 ): number => {
+  // console.log(netWeight, purity, metalRate);
   const pureGoldWeight = (netWeight * purity) / 100;
   const metalValue = pureGoldWeight * metalRate;
   return metalValue;
+
 };

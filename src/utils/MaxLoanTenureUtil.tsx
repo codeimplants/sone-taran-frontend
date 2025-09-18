@@ -38,9 +38,9 @@ export const calculateMaxLoanTenure2 = (
   itemValue: number,
   annualRate: number
 ): number => {
-  console.log('loanAmount ', loanAmount);
-  console.log('itemValue ', itemValue);
-  console.log('annualRate ', annualRate);
+  // console.log('loanAmount ', loanAmount);
+  // console.log('itemValue ', itemValue);
+  // console.log('annualRate ', annualRate);
   const rate = annualRate / 100;
 
   let months = 0;

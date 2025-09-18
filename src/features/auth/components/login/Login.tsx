@@ -10,6 +10,7 @@ import {
   Divider,
   Dialog,
   DialogContent,
+  Link,
 } from '@mui/material';
 
 // Icons
@@ -243,6 +244,9 @@ const LogIn: React.FC = () => {
                 >
                   {t('loginPage.sendOtp')}
                 </Button>
+
+                <Link href="/privacy" textAlign={'center'}>Terms and Condition</Link>
+
                 {/* For horizontal line and text over it  */}
                 <Box
                   sx={{

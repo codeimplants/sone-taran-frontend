@@ -76,6 +76,11 @@ interface kalamTabelProps {
 }
 const useKalamtable: React.FC<kalamTabelProps> = (props) => {
   const { data } = props;
+  const { fetchRateIfNeeded } = useKalamsData();
+  
+  useEffect(() => {
+    fetchRateIfNeeded()
+  })
   const fetchGoldRate = useKalamsData();
 
   // For translation
@@ -344,7 +349,7 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                     <TableRow key={kalam._id}>
                       {/* Kalam ID  */}
                       <TableCell>{kalam.kalam.loanId}</TableCell>
-
+                      <TableCell>{fetchGoldRate?.rateData[0]?.goldRate}</TableCell>
                       {/* Customer Name + Info Icon */}
                       <TableCell>
                         {kalam.customerDetails.name}
@@ -404,14 +409,14 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                             dukandarProfitLoss < 0
                               ? 'rgba(255, 0, 0, 0.1)' // soft red
                               : dukandarProfitLoss > 0
-                              ? 'rgba(0, 128, 0, 0.1)' // soft green
-                              : 'transparent',
+                                ? 'rgba(0, 128, 0, 0.1)' // soft green
+                                : 'transparent',
                           color:
                             dukandarProfitLoss < 0
                               ? '#d32f2f' // strong red
                               : dukandarProfitLoss > 0
-                              ? '#2e7d32' // strong green
-                              : 'inherit',
+                                ? '#2e7d32' // strong green
+                                : 'inherit',
                           fontWeight:
                             dukandarProfitLoss !== 0 ? 'bold' : 'normal',
                         }}
@@ -434,14 +439,14 @@ const useKalamtable: React.FC<kalamTabelProps> = (props) => {
                             valueToday - vyapariDue < 0
                               ? 'rgba(255, 0, 0, 0.1)' // soft red
                               : valueToday - vyapariDue > 0
-                              ? 'rgba(0, 128, 0, 0.1)' // soft green
-                              : 'transparent',
+                                ? 'rgba(0, 128, 0, 0.1)' // soft green
+                                : 'transparent',
                           color:
                             valueToday - vyapariDue < 0
                               ? '#d32f2f' // strong red
                               : valueToday - vyapariDue > 0
-                              ? '#2e7d32' // strong green
-                              : 'inherit',
+                                ? '#2e7d32' // strong green
+                                : 'inherit',
                           fontWeight:
                             valueToday - vyapariDue !== 0 ? 'bold' : 'normal',
                         }}

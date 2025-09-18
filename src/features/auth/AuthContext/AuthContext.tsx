@@ -8,7 +8,6 @@ export interface AuthContextType {
   verifyOtp: (otp: number) => Promise<boolean>;
   verifyEmailOtp: (otp: string) => Promise<boolean>;
   logout: () => void;
-  otpSent: number | null | undefined;
   isAuthenticated: boolean;
   user: any | null;
   loadingAPI: boolean;
